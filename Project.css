@@ -1,6 +1,6 @@
  body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b); /* darker background */
+      background: linear-gradient(135deg, #0f172a, #1e293b); 
       margin: 0;
       display: flex;
       justify-content: center;
@@ -77,4 +77,5 @@
     }
     #next-btn:hover {
       background: #2563eb;
+
     }
