@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz App</title>
+<link rel="stylesheet" href="Project.css">
+</head>
+<body>
+  <div class="quiz-container">
+    <h1> Quiz App </h1>
+    <div class="progress-bar"><div class="progress" id="progress"></div></div>
+    <div id="quiz">
+      <div class="question" id="question">Question text</div>
+      <div class="answers" id="answers"></div>
+      <button id="next-btn">Next</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+  { question: "Which language runs in a web browser?", answers: ["Java", "C", "Python", "JavaScript"], correct: "JavaScript" },
+  { question: "What does CSS stand for?", answers: ["Central Style Sheets", "Cascading Style Sheets", "Computer Style Sheets", "Creative Style Sheets"], correct: "Cascading Style Sheets" },
+  { question: "What year was JavaScript launched?", answers: ["1996", "1995", "1994", "1997"], correct: "1995" },
+  { question: "Which company developed JavaScript?", answers: ["Microsoft", "Netscape", "Google", "Apple"], correct: "Netscape" },
+  { question: "HTML stands for?", answers: ["Hypertext Markup Language", "Hyperlinks and Text Markup Language", "Home Tool Markup Language", "Hyper Transfer Markup Language"], correct: "Hypertext Markup Language" },
+  { question: "Which is not a programming language?", answers: ["Python", "HTML", "C++", "Java"], correct: "HTML" },
+  { question: "Inside which HTML element do we put the JavaScript?", answers: ["&lt;js&gt;", "&lt;script&gt;", "&lt;scripting&gt;", "&lt;javascript&gt;"], correct: "&lt;script&gt;" },
+  { question: "Which symbol is used for comments in CSS?", answers: ["//", "/* */", "&lt;!-- --&gt;", "#"], correct: "/* */" },
+  { question: "Which property is used to change text color in CSS?", answers: ["font-color", "text-color", "color", "background-color"], correct: "color" },
+  { question: "Which HTML tag is used for the largest heading?", answers: ["&lt;heading&gt;", "&lt;h6&gt;", "&lt;h1&gt;", "&lt;head&gt;"], correct: "&lt;h1&gt;" }
+];
+
+
+    const questionElement = document.getElementById("question");
+    const answersElement = document.getElementById("answers");
+    const nextButton = document.getElementById("next-btn");
+    const progressBar = document.getElementById("progress");
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function startQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      nextButton.innerHTML = "Next";
+      showQuestion();
+      updateProgress();
+    }
+
+    function showQuestion() {
+      resetState();
+      let currentQuestion = questions[currentQuestionIndex];
+      let questionNo = currentQuestionIndex + 1;
+      questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
+
+      currentQuestion.answers.forEach(answer => {
+        const button = document.createElement("button");
+        button.innerHTML = answer;
+        answersElement.appendChild(button);
+        button.addEventListener("click", () => selectAnswer(answer, currentQuestion.correct));
+      });
+      updateProgress();
+    }
+
+    function resetState() {
+      nextButton.style.display = "none";
+      while (answersElement.firstChild) {
+        answersElement.removeChild(answersElement.firstChild);
+      }
+    }
+
+    function selectAnswer(answer, correctAnswer) {
+      if (answer === correctAnswer) {
+        score++;
+      }
+      Array.from(answersElement.children).forEach(btn => {
+        if (btn.innerHTML === correctAnswer) {
+          btn.style.background = "#16a34a"; // green
+        } else if (btn.innerHTML === answer) {
+          btn.style.background = "#dc2626"; // red
+        }
+        btn.disabled = true;
+      });
+      nextButton.style.display = "block";
+    }
+
+    function showScore() {
+      resetState();
+      questionElement.innerHTML = `🎉 You scored ${score} out of ${questions.length}!`;
+      nextButton.innerHTML = "Play Again";
+      nextButton.style.display = "block";
+    }
+
+    function handleNextButton() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+      } else {
+        showScore();
+      }
+    }
+
+    function updateProgress() {
+      const progressPercent = ((currentQuestionIndex) / questions.length) * 100;
+      progressBar.style.width = progressPercent + "%";
+    }
+
+    nextButton.addEventListener("click", () => {
+      if (currentQuestionIndex < questions.length) {
+        handleNextButton();
+      } else {
+        startQuiz();
+      }
+    });
+
+    startQuiz();
+  </script>
+</body>
+</html>
