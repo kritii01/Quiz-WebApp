@@ -10,4 +10,4 @@ Highlights:
  Responsive and user-friendly interface.
 
 Technologies Used:
- Frontend: HTML, CSS, JavaScript
+ Frontend: HTML, CSS and JavaScript.
